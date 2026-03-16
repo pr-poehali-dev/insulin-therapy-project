@@ -778,3 +778,89 @@
   color: var(--slide-muted);
   text-align: center;
 }
+
+/* PDF BUTTON */
+.pdf-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--slide-blue-dark);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 100;
+  transition: background 0.15s;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+.pdf-btn:hover {
+  background: var(--slide-blue-mid);
+}
+
+/* PRINT STYLES */
+.print-all-slides {
+  background: white;
+}
+.print-slide {
+  width: 297mm;
+  height: 210mm;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  page-break-after: always;
+  break-after: page;
+}
+.print-slide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--slide-blue-dark),
+    var(--slide-blue-mid),
+    var(--slide-blue-light)
+  );
+}
+.print-slide .slide-content {
+  padding: 2rem 2.8rem;
+  flex: 1;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+  .pdf-btn,
+  .slide-nav,
+  .slide-dots,
+  .presentation-root {
+    display: none !important;
+  }
+  .print-all-slides {
+    display: block !important;
+  }
+  .print-slide {
+    width: 100vw;
+    height: 100vh;
+    page-break-after: always;
+    break-after: page;
+  }
+}

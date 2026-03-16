@@ -427,6 +427,7 @@ const Index = () => {
   const [current, setCurrent] = useState(0);
   const [animDir, setAnimDir] = useState<"next" | "prev">("next");
   const [key, setKey] = useState(0);
+  const [isPrint, setIsPrint] = useState(false);
 
   const goTo = useCallback((idx: number, dir: "next" | "prev") => {
     if (idx < 0 || idx >= slides.length) return;
@@ -444,11 +445,39 @@ const Index = () => {
     return () => window.removeEventListener("keydown", handler);
   }, [current, goTo]);
 
+  const handlePrint = () => {
+    setIsPrint(true);
+    setTimeout(() => {
+      window.print();
+      setIsPrint(false);
+    }, 300);
+  };
+
   const slide = slides[current];
   const Component = slideComponents[slide.type];
 
+  if (isPrint) {
+    return (
+      <div className="print-all-slides">
+        {slides.map((s) => {
+          const C = slideComponents[s.type];
+          return (
+            <div key={s.id} className="print-slide">
+              <C />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div className="presentation-root">
+      <button className="pdf-btn" onClick={handlePrint} title="Сохранить как PDF">
+        <Icon name="Download" size={16} />
+        <span>PDF</span>
+      </button>
+
       <div key={key} className={`presentation-slide slide-enter-${animDir}`}>
         <Component />
       </div>
